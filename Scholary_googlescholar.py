@@ -51,67 +51,70 @@ from scholarly import scholarly
 
 # TEST ON OTHER LINK LAB FACULTY
 
-faculty = ['Madhur Behl', 'Nicola Bezzo', 'Matthew Bolton', 'Maite Brandt-Pearce', 'Benton H. Calhoun']
 
-faculty_list = ['Negin Alemazkoor', 
-                'Homa Alemzadeh', 
-                'Larry Band', 
-                'Laura Barnes', 
-                'Madhur Behl', 
-                'Nicola Bezzo', 
-                'Matthew Bolton',
-                'Steven M. Bowers', 
-                'Maite Brandt-Pearce', 
-                'Benton Calhoun', 
-                'Brad Campbell', 
-                # 'Cindy Chang', Does Qing Chang work?? two authors found
-                'Qing Chang'
-                'Donna T. Chen',
-                'Haibo Dong', 
-                'Afsaneh Doryab', 
-                'Lu Feng', 
-                'Tomonari Furukawa', 
-                'Gregory Gerling', 
-                'Jonathan L. Goodall', 
-                'Devin Harris', 
-                'Seongkook Heo', 
-                'Arsalan Heydarian', 
-                'Tariq Iqbal', 
-                'Barry Johnson', 
-                # YL Kuo?
-                'Yen-Ling Kuo',    #find author id
-                'Venkataraman Lakshmi', 
-                'James H. Lambert', 
-                'Zongli Lin', 
-                'Felix Xiaozhu Lin', 
-                'Eric Loth', 
-                'Osman E. Ozbulut',
-                'B. Brian Park', 
-                'Daniel Quinn', 
-                'Sara Riggs', 
-                'Haiying Shen', 
-                'Cong Shen', 
-                'Brian L. Smith', 
-                'Stan R. Mircea',
-                'John Stankovic', 
-                'Yixin Sun', 
-                'Sarah Sun', 
-                'Yuan Tian', #no author found
-                'Shangtong Zhang']
+faculty_list = {'Negin Alemazkoor': "lDDZYr0AAAAJ",
+                'Homa Alemzadeh': 'sXpmLxUAAAAJ',
+                'Larry Band': 'hKmmMrAAAAAJ',
+                'Laura Barnes' : "h-Lr0bQAAAAJ",
+                'Madhur Behl': "bj_imaYAAAAJ",
+                'Nicola Bezzo': "lyNOlzoAAAAJ",
+                'Matthew Bolton': "6c19RG8AAAAJ",
+                'Steven M. Bowers': "0h-RyocAAAAJ",
+                'Maite Brandt-Pearce': "KFLFbWoAAAAJ&hl",
+                'Benton Calhoun': "I7a8pr0AAAAJ&hl",
+                'Brad Campbell': "MLx5TCQAAAAJ&hl", 
+                'Qing Chang' : "TfPemJcAAAAJ",
+                'Donna T. Chen': "l20iH34AAAAJ",
+                'Haibo Dong': "SrYdog8AAAAJ",
+                'Afsaneh Doryab': "O0lONMkAAAAJ",
+                'Lu Feng': "HiyMQzEAAAAJ",
+                'Tomonari Furukawa': "RMETVDwAAAAJ",
+                'Gregory Gerling': "ibBUGLAAAAAJ&hl",
+                'Jonathan L. Goodall': "M9aKXDwAAAAJ",
+                'Devin Harris': "Y0e7hZsAAAAJ&hl",
+                'Seongkook Heo': "7r0_F0kAAAAJ",
+                'Arsalan Heydarian': "VTdMErEAAAAJ&hl",
+                'Tariq Iqbal': "t_ndTI4AAAAJ&hl",
+                'Barry Johnson': "vMTL9koAAAAJ&hl",
+                'Yen-Ling Kuo': 'pNkyRs4AAAAJ',
+                'Venkataraman Lakshmi': "vbNdSy0AAAAJ",
+                'James H. Lambert': "qVfffxkAAAAJ",
+                'Zongli Lin': "n4fG76YAAAAJ",
+                'Felix Xiaozhu Lin': "f6FFhS8AAAAJ",
+                'Eric Loth': "AqEcQtYAAAAJ",
+                'Osman E. Ozbulut': "VdoAeqAAAAAJ",
+                'B. Brian Park': "I23GOcEAAAAJ",
+                'Daniel Quinn': "8A8eaZMAAAAJ",
+                'Sara Riggs': "ALjgMAoAAAAJ",
+                'Haiying Shen': "W0Cx7ZAAAAAJ",
+                'Cong Shen': "70LBhKcAAAAJ",
+                'Brian L. Smith': "9uFvl5wAAAAJ",
+                'Stan R. Mircea': "5DLZvlMAAAAJ",
+                'John Stankovic': "4VJre9IAAAAJ",
+                'Yixin Sun': "ov72AA4AAAAJ",
+                'Sarah Sun': "7oNkNtIAAAAJ",
+                'Yuan Tian': "ja0GtqgAAAAJ",
+                'Shangtong Zhang': "Pn7fj4IAAAAJ"
+    }
 
-search_query = scholarly.search_author('Shangtong Zhang, Virginia')
+# search_query = scholarly.search_author('Jonathan Goodall, Virginia')
+search_query = scholarly.search_author_id('7oNkNtIAAAAJ')
+# test = search_query['source']
+# author = scholarly.fill(next(search_query))
+author_name = search_query['name']
 
-author = scholarly.fill(next(search_query))
+search2 = scholarly.search_author(author_name)
+author_info = scholarly.fill(next(search2))
 
-# get author's google scholar id
-author_id = author['scholar_id']
+# # get author's google scholar id
+# author_id = author['scholar_id']
 
-# publications are in a list. Get last publication in list (most recent publication?)
-publications = author['publications']
-# print name of all publications
-for pub in publications:
-    print(pub['bib']['title'])
-    print()
+# # publications are in a list. Get last publication in list (most recent publication?)
+# publications = author['publications']
+# # print name of all publications
+# for pub in publications:
+#     print(pub['bib']['title'])
+#     print()
 
 
 # for i in faculty_list:
