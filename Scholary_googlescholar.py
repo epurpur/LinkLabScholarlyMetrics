@@ -53,7 +53,53 @@ from scholarly import scholarly
 
 faculty = ['Madhur Behl', 'Nicola Bezzo', 'Matthew Bolton', 'Maite Brandt-Pearce', 'Benton H. Calhoun']
 
-search_query = scholarly.search_author('Benton Calhoun, Virginia')
+faculty_list = ['Negin Alemazkoor', 
+                'Homa Alemzadeh', 
+                'Larry Band', 
+                'Laura Barnes', 
+                'Madhur Behl', 
+                'Nicola Bezzo', 
+                'Matthew Bolton',
+                'Steven M. Bowers', 
+                'Maite Brandt-Pearce', 
+                'Benton Calhoun', 
+                'Brad Campbell', 
+                # 'Cindy Chang', Does Qing Chang work?? two authors found
+                'Qing Chang'
+                'Donna T. Chen',
+                'Haibo Dong', 
+                'Afsaneh Doryab', 
+                'Lu Feng', 
+                'Tomonari Furukawa', 
+                'Gregory Gerling', 
+                'Jonathan L. Goodall', 
+                'Devin Harris', 
+                'Seongkook Heo', 
+                'Arsalan Heydarian', 
+                'Tariq Iqbal', 
+                'Barry Johnson', 
+                # YL Kuo?
+                'Yen-Ling Kuo',    #find author id
+                'Venkataraman Lakshmi', 
+                'James H. Lambert', 
+                'Zongli Lin', 
+                'Felix Xiaozhu Lin', 
+                'Eric Loth', 
+                'Osman E. Ozbulut',
+                'B. Brian Park', 
+                'Daniel Quinn', 
+                'Sara Riggs', 
+                'Haiying Shen', 
+                'Cong Shen', 
+                'Brian L. Smith', 
+                'Stan R. Mircea',
+                'John Stankovic', 
+                'Yixin Sun', 
+                'Sarah Sun', 
+                'Yuan Tian', #no author found
+                'Shangtong Zhang']
+
+search_query = scholarly.search_author('Shangtong Zhang, Virginia')
 
 author = scholarly.fill(next(search_query))
 
@@ -66,3 +112,14 @@ publications = author['publications']
 for pub in publications:
     print(pub['bib']['title'])
     print()
+
+
+# for i in faculty_list:
+#     search_query = scholarly.search_author(f"{i}, Virginia")
+    
+#     # scholarly returns a generator object
+#     author = scholarly.fill(next(search_query))
+    
+    
+    
+    
