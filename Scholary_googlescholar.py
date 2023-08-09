@@ -65,96 +65,96 @@ authors = new_query['author_id']
 # TEST ON OTHER LINK LAB FACULTY
 
 
-# faculty_list = {'Negin Alemazkoor': "lDDZYr0AAAAJ",
-#                 'Homa Alemzadeh': 'sXpmLxUAAAAJ',
-#                 'Larry Band': 'hKmmMrAAAAAJ',
-#                 'Laura Barnes' : "h-Lr0bQAAAAJ",
-#                 'Madhur Behl': "bj_imaYAAAAJ",
-#                 'Nicola Bezzo': "lyNOlzoAAAAJ",
-#                 'Matthew Bolton': "6c19RG8AAAAJ",
-#                 'Steven M. Bowers': "0h-RyocAAAAJ",
-#                 'Maite Brandt-Pearce': "KFLFbWoAAAAJ&hl",
-#                 'Benton Calhoun': "I7a8pr0AAAAJ&hl",
-#                 'Brad Campbell': "MLx5TCQAAAAJ&hl", 
-#                 'Qing Chang' : "TfPemJcAAAAJ",
-#                 'Donna T. Chen': "l20iH34AAAAJ",
-#                 'Haibo Dong': "SrYdog8AAAAJ",
-#                 'Afsaneh Doryab': "O0lONMkAAAAJ",
-#                 'Lu Feng': "HiyMQzEAAAAJ",
-#                 'Tomonari Furukawa': "RMETVDwAAAAJ",
-#                 'Gregory Gerling': "ibBUGLAAAAAJ&hl",
-#                 'Jonathan L. Goodall': "M9aKXDwAAAAJ",
-#                 'Devin Harris': "Y0e7hZsAAAAJ&hl",
-#                 'Seongkook Heo': "7r0_F0kAAAAJ",
-#                 'Arsalan Heydarian': "VTdMErEAAAAJ&hl",
-#                 'Tariq Iqbal': "t_ndTI4AAAAJ&hl",
-#                 'Barry Johnson': "vMTL9koAAAAJ&hl",
-#                 'Yen-Ling Kuo': 'pNkyRs4AAAAJ',
-#                 'Venkataraman Lakshmi': "vbNdSy0AAAAJ",
-#                 'James H. Lambert': "qVfffxkAAAAJ",
-#                 'Zongli Lin': "n4fG76YAAAAJ",
-#                 'Felix Xiaozhu Lin': "f6FFhS8AAAAJ",
-#                 'Eric Loth': "AqEcQtYAAAAJ",
-#                 'Osman E. Ozbulut': "VdoAeqAAAAAJ",
-#                 'B. Brian Park': "I23GOcEAAAAJ",
-#                 'Daniel Quinn': "8A8eaZMAAAAJ",
-#                 'Sara Riggs': "ALjgMAoAAAAJ",
-#                 'Haiying Shen': "W0Cx7ZAAAAAJ",
-#                 'Cong Shen': "70LBhKcAAAAJ",
-#                 'Brian L. Smith': "9uFvl5wAAAAJ",
-#                 'Stan R. Mircea': "5DLZvlMAAAAJ",
-#                 'John Stankovic': "4VJre9IAAAAJ",
-#                 'Yixin Sun': "ov72AA4AAAAJ",
-#                 'Sarah Sun': "7oNkNtIAAAAJ",
-#                 'Yuan Tian': "ja0GtqgAAAAJ",
-#                 'Shangtong Zhang': "Pn7fj4IAAAAJ"
-#                 }
+faculty_list = {'Negin Alemazkoor': "lDDZYr0AAAAJ",
+                'Homa Alemzadeh': 'sXpmLxUAAAAJ',
+                'Larry Band': 'hKmmMrAAAAAJ',
+                'Laura Barnes' : "h-Lr0bQAAAAJ",
+                'Madhur Behl': "bj_imaYAAAAJ",
+                'Nicola Bezzo': "lyNOlzoAAAAJ",
+                'Matthew Bolton': "6c19RG8AAAAJ",
+                'Steven M. Bowers': "0h-RyocAAAAJ",
+                'Maite Brandt-Pearce': "KFLFbWoAAAAJ&hl",
+                'Benton Calhoun': "I7a8pr0AAAAJ&hl",
+                'Brad Campbell': "MLx5TCQAAAAJ&hl", 
+                'Qing Chang' : "TfPemJcAAAAJ",
+                'Donna T. Chen': "l20iH34AAAAJ",
+                'Haibo Dong': "SrYdog8AAAAJ",
+                'Afsaneh Doryab': "O0lONMkAAAAJ",
+                'Lu Feng': "HiyMQzEAAAAJ",
+                'Tomonari Furukawa': "RMETVDwAAAAJ",
+                'Gregory Gerling': "ibBUGLAAAAAJ&hl",
+                'Jonathan L. Goodall': "M9aKXDwAAAAJ",
+                'Devin Harris': "Y0e7hZsAAAAJ&hl",
+                'Seongkook Heo': "7r0_F0kAAAAJ",
+                'Arsalan Heydarian': "VTdMErEAAAAJ&hl",
+                'Tariq Iqbal': "t_ndTI4AAAAJ&hl",
+                'Barry Johnson': "vMTL9koAAAAJ&hl",
+                'Yen-Ling Kuo': 'pNkyRs4AAAAJ',
+                'Venkataraman Lakshmi': "vbNdSy0AAAAJ",
+                'James H. Lambert': "qVfffxkAAAAJ",
+                'Zongli Lin': "n4fG76YAAAAJ",
+                'Felix Xiaozhu Lin': "f6FFhS8AAAAJ",
+                'Eric Loth': "AqEcQtYAAAAJ",
+                'Osman E. Ozbulut': "VdoAeqAAAAAJ",
+                'B. Brian Park': "I23GOcEAAAAJ",
+                'Daniel Quinn': "8A8eaZMAAAAJ",
+                'Sara Riggs': "ALjgMAoAAAAJ",
+                'Haiying Shen': "W0Cx7ZAAAAAJ",
+                'Cong Shen': "70LBhKcAAAAJ",
+                'Brian L. Smith': "9uFvl5wAAAAJ",
+                'Stan R. Mircea': "5DLZvlMAAAAJ",
+                'John Stankovic': "4VJre9IAAAAJ",
+                'Yixin Sun': "ov72AA4AAAAJ",
+                'Sarah Sun': "7oNkNtIAAAAJ",
+                'Yuan Tian': "ja0GtqgAAAAJ",
+                'Shangtong Zhang': "Pn7fj4IAAAAJ"
+                }
 
-# # make api call by faculty member's google scholar ID
-# search_query = scholarly.search_author_id('7oNkNtIAAAAJ')
+# make api call by faculty member's google scholar ID
+search_query = scholarly.search_author_id('7oNkNtIAAAAJ')
 
-# # get author's name from search_author_id in order to do search_author with it
-# # this is because search_author_id doesn't return anything about publications
-# author_name = search_query['name']
+# get author's name from search_author_id in order to do search_author with it
+# this is because search_author_id doesn't return anything about publications
+author_name = search_query['name']
 
-# search2 = scholarly.search_author(author_name)
-# author_info = scholarly.fill(next(search2))
-# author_publications = author_info['publications']
+search2 = scholarly.search_author(author_name)
+author_info = scholarly.fill(next(search2))
+author_publications = author_info['publications']
 
-# publication_count = 0               # counts total number of publications by faculty member
-# publication_years = []              # counts years in which faculty member published
-# publications_with_coauthor = 0      # counts publications which faculty published with a coauthor
+publication_count = 0               # counts total number of publications by faculty member
+publication_years = []              # counts years in which faculty member published
+publications_with_coauthor = 0      # counts publications which faculty published with a coauthor
 
-# for pub in author_publications:
+for pub in author_publications:
         
-#     publication_count += 1
+    publication_count += 1
     
-#     # get title of publication
-#     title = pub['bib']['title']
-#     try:
-#         #try to get year published. Not always available
-#         year_published = pub['bib']['pub_year']
-#         publication_years.append(year_published)
-#     except Exception:
-#         pass
+    # get title of publication
+    title = pub['bib']['title']
+    try:
+        #try to get year published. Not always available
+        year_published = pub['bib']['pub_year']
+        publication_years.append(year_published)
+    except Exception:
+        pass
     
-#     try:
-#         # for each title, need to perform its own query to get information about this title. 
-#         article_title_query = scholarly.search_single_pub(title)
-#         # gets list of google scholar author ids for each publication. Not really important who, but just need to know if more than 1 author
-#         all_authors = article_title_query['author_id']
+    try:
+        # for each title, need to perform its own query to get information about this title. 
+        article_title_query = scholarly.search_single_pub(title)
+        # gets list of google scholar author ids for each publication. Not really important who, but just need to know if more than 1 author
+        all_authors = article_title_query['author_id']
         
-#         if len(all_authors) > 1:
-#             publications_with_coauthor += 1
+        if len(all_authors) > 1:
+            publications_with_coauthor += 1
             
-#     except Exception:
-#         pass
+    except Exception:
+        pass
     
     
     
     
-# publication_year_list = [int(item) for item in publication_years]
-# publications_per_year_average = publication_count / (max(publication_year_list) - min(publication_year_list))
+publication_year_list = [int(item) for item in publication_years]
+publications_per_year_average = publication_count / (max(publication_year_list) - min(publication_year_list))
 
 
 
