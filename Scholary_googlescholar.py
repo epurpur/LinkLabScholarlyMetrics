@@ -41,8 +41,8 @@ from scholarly import scholarly
 new_query = scholarly.search_single_pub("Efficient Stochastic Analysis of Power Distribution Systems Using Polynomial Models")
 authors = new_query['author_id']
 
-get_author_name = scholarly.search_author_id(authors[0])
-get_author_info = scholarly.search_author(get_author_name['name'])
+# get_author_name = scholarly.search_author_id(authors[0])
+# get_author_info = scholarly.search_author(get_author_name['name'])
 
 
 
@@ -129,16 +129,26 @@ get_author_info = scholarly.search_author(get_author_name['name'])
         
 #     publication_count += 1
     
+#     # get title of publication
 #     title = pub['bib']['title']
 #     try:
+#         #try to get year published. Not always available
 #         year_published = pub['bib']['pub_year']
 #         publication_years.append(year_published)
 #     except Exception:
 #         pass
     
-#     article_title_query = scholarly.search_single_pub(title)
-#     all_authors = article_title_query['author_id']
-
+#     try:
+#         # for each title, need to perform its own query to get information about this title. 
+#         article_title_query = scholarly.search_single_pub(title)
+#         # gets list of google scholar author ids for each publication. Not really important who, but just need to know if more than 1 author
+#         all_authors = article_title_query['author_id']
+        
+#         if len(all_authors) > 1:
+#             publications_with_coauthor += 1
+            
+#     except Exception:
+#         pass
     
     
     
