@@ -11,318 +11,128 @@
 
 import requests
 import json
+import math
+import pandas as pd
 
 
 
+# Create pandas dataframe to hold data for each faculty member
+link_lab_df = pd.DataFrame(columns=['Name', 'ORCID', 'Number of Publications', 'Publications with Co-Author', 'Average Publications per Year'])
 
-"""
-Section 1: Data for UVA as an institution
-"""
-#####INSTITUTIONAL IDs FOR UVA AND AFFILIATED INSTITUTIONS
-# uva_id_URL ='https://openalex.org/I51556381'
-# uva_health_id_URL = 'https://openalex.org/I2799765794'
-# uva_urology_id_URL = 'https://openalex.org/I21113243'
-
-
-# request = requests.get(f'https://api.openalex.org/institutions?filter=display_name.search:University%20of%20Virginia')
-
-# json_data = json.loads(request.text)
-# #print(json_data)
-    
-# results = json_data['results']
-# print('')
-# for result in results:
-#     print(result['display_name'])
-# print('')
-
-
-# # there are a bunch of results for institutions with a name similar to "university of virginia". Filtering out just the right ones
-# uva_data = results[0]
-# uva_health_data = results[1] 
-# uva_dept_of_urology = results[2]   # why is the separate?  I don't know why
-# uva_medical_center = results[9]
-# uva_childrens_hospital = results[10]
-# uva_hospital = results[11]
-
-# # potentially intersting UVA data?
-# print(f"Total number of UVA publications: {uva_data['works_count']}")
-# print(f"Total number of UVA Health publications: {uva_health_data['works_count']}")
-# print(f"Total number of Department of Urology publications: {uva_dept_of_urology['works_count']}")
-# print(f"Total number of UVA Medical Center publications: {uva_medical_center['works_count']}")
-# print(f"Total number of UVA children's hospital': {uva_childrens_hospital['works_count']}")
-# print(f"Total number of UVA hospital publications: {uva_hospital['works_count']}")
-
-
-# print('')
-
-# print(f"Total number of citations: UVA publications: {uva_data['cited_by_count']}")
-# print(f"Total number of citations: UVA Health publications: {uva_health_data['cited_by_count']}")
-# print(f"Total number of citations: UVA deptartment of Urology: {uva_dept_of_urology['cited_by_count']}")
-# print(f"Total number of citations: UVA medical center: {uva_medical_center['cited_by_count']}")
-# print(f"Total number of citations: UVA children's hospital': {uva_childrens_hospital['cited_by_count']}")
-# print(f"Total number of citations: UVA hospital': {uva_hospital['cited_by_count']}")
-
-
-
-# print('')
-
-# print("Publication counts and citations per year (just University of Virginia)")
-
-# counts_by_year = uva_data['counts_by_year']
-# for year in counts_by_year:
-#     print(f"Year: {year['year']}, Publications: {year['works_count']}, Citations: {year['cited_by_count']}")
-    
-    
-"""
-Section 1b - Answer question: List of most highly cited UVA publications in last 15 years
-"""
-
-# request = requests.get(f'https://api.openalex.org/institutions/I51556381')
-# query works by institutional id for UVA
-# request = requests.get('https://api.openalex.org/works?filter=institution.id:I51556381&page=50&per-page=200')
-# json_data = json.loads(request.text)
-
-#in 'results' key, results are ordered chronologically in descending order. This means, most recently published articles shown first. 
-#Because I can only get 10,000 results at the moment, I cannot get results for all 128k published articles 
-#results will show the most cited articles only for the most recent 10k publications
-
-##CAVEAT: as of now, the 10,000th article dates back only to 2020. So I can get this figure but only dating back to 2020 which is kind of useless or am I wrong?
-
-
-    
-
-    
-"""
-Section 2: Works
-
-There are 39790 affiliated authors at UVA in the dataset. I can only include 10,000 in the results.
-The ability to include all is not currently available in the API (but is in the works)
-
-"""
-# request = requests.get('https://api.openalex.org/authors?filter=last_known_institution.id:I51556381,cited_by_count:>0&page=1&per-page=200')
-# json_data = json.loads(request.text)
-# # does this seem like too many?
-# print(f"# authors with last known affiliation of UVA: {json_data['meta']['count']}")
-
-# print("")
-# print("")
-# print(f"Printing Authors 1 - 200 (by production)")
-# print("")
-
-# authors = json_data['results']
-# print(f"Authors on current page:")
-# for author in authors:
-#     print(author['display_name'])
 
 
 
 
 
 """
-Section 3: Author
+I am looking for # of publications, # of publications with co-author, # avg number publications per year
 """
-# author ID of Brad Cox = A3037630497
-# request = requests.get(f'https://api.openalex.org/authors/A3037630497')
-# request = requests.get(f'https://api.openalex.org/authors/random')
 
-# json_data = json.loads(request.text)
-# print('author name: ', json_data['display_name'])
-
-# # print(f"Numbers for {json_data['display_name']}: ")
-# print(f"Publications: {json_data['works_count']}")
-# # print(f"Citations: {json_data['cited_by_count']}")
-
-"""
-Section 3a - Answer question: what is most recent inactive year for author?
-"""
-# counts_by_year = json_data['counts_by_year']
-# inactive_years = []
-
-# for year in counts_by_year:
-#     if year['works_count'] == 0:
-#         inactive_years.append(int(year['year']))
-
-# if len(inactive_years) == 0:
-#     inactive_years.append('Currently active')
-        
-# print(f"Most recent inactive year for json_data['display_name']: {inactive_years[0]}")
-
-
-"""
-Section 3b - Answer question: What discipline does the author work in?
-"""
-# author ID of Brad Cox = A3037630497
-# request = requests.get(f'https://api.openalex.org/authors/A3037630497')   # for specific author
-# # request = requests.get(f'https://api.openalex.org/authors/random')      # for random author
-
-# json_data = json.loads(request.text)
-
-# ##### As of now, there is no given 'department' per say. The closest thing we can get is the 'x_concepts' field (subject to removal)
-# ##### x_concepts is most frequently applied to works created by this author
-# ##### ex: Brad Cox - 'particle physics', 'quantum mechanics', 'nuclear physics'
-# concepts = []
-
-# for discipline in json_data['x_concepts']:
-#     concepts.append(discipline['display_name'])
-
-
-
-"""
-Section 4: Works
-"""
-#Section 4a  ##SPECIFIC ARTICLE
-# request = requests.get(f'https://api.openalex.org/works/W2741809807')
-# json_data = json.loads(request.text)
-
-# print(f"Information about article... ")
-# print(f"Title: {json_data['title']}") 
-# print(f"Authors: ")
-# print('')
-
-# for author in json_data['authorships']:
-#     print(author['author']['display_name'])
-    
-# print('')
-# print(f"Publisher: {json_data['host_venue']['display_name']}")
-    
-# print('')
-# print(f"OA status of this article: {json_data['open_access']['oa_status']}")
-
-
-"""
-Section 4b   ##RANDOM ARTICLE
-"""
-# request = requests.get(f'https://api.openalex.org/works/random')
-# json_data = json.loads(request.text)
-
-# print(f"Information about article... ")
-# print('')
-# print(f"Title: {json_data['title']}") 
-# print('')
-# print(f"Authors: ")
-
-# for author in json_data['authorships']:
-#     print(author['author']['display_name'])
-    
-# print('')
-# print(f"Publisher: {json_data['host_venue']['display_name']}")
-    
-# print('')
-# print(f"Open Access? : {json_data['open_access']['is_oa']}")
-# print(f"OA status of this article: {json_data['open_access']['oa_status']}")
-
-
-"""
-Section 4c: Answer question: can we see yaer cited for citations by each publication?
-""" 
-# request = requests.get(f'https://api.openalex.org/works/random')
-# json_data = json.loads(request.text)
-
-# print(f"Original Article publication date: {json_data['publication_date']}")
-# print(f"Number of citations: {json_data['cited_by_count']}")
-
-# pages = 1
-
-# # citation_request = requests.get(json_data['cited_by_api_url']+ '&page={pages}' + '&per-page=200')
-# citation_request = requests.get(f"{json_data['cited_by_api_url']}&page={pages}&per-page=200")
-
-# citation_json = json.loads(citation_request.text)
-
-# year_of_citations = []
-
-# # for result in citation_json['results']:
-# #     year_of_citations.append(result['publication_year'])
-# #     #######START HERE
-
-# #the loop can execute a maximum of 50 times
-# #this is because 10,000 results (current max) / 200 results per page = 50
-# for i in range(50):
-#     try:
-#         citation_request = requests.get(f"{json_data['cited_by_api_url']}&page={pages}&per-page=200")
-        
-#         citation_json = json.loads(citation_request.text)
-        
-#         for result in citation_json['results']:
-#             year_of_citations.append(result['publication_year'])
-            
-#         pages += 1
-#     except Exception:
-#         pass
-
-# #print years of citations and number of citations per year
-# print('Citation years and number of citations by year')
-# print([[x,year_of_citations.count(x)] for x in set(year_of_citations)])
-
-
-
-"""
-Section 4d: Can we find items by DOI?  Specifically items from Libra by their DOI?
-"""
-# #DOI is available:
-# request = requests.get(f'https://api.openalex.org/works/random')
-# json_data = json.loads(request.text)
-# print(f"DOI for this article: {json_data['doi']}")
-
-# #Specific search for item by DOI (need to use doi.id)
-# request = requests.get('https://api.openalex.org/works/doi:https://doi.org/10.1007/s11948-009-9148-z')
-# json_data = json.loads(request.text)
-
-
-## Is Libra info in there? (I'll try searching by display_name)
-## There are SOME results from stuff in Libra Open. For example the following...
-
-# request = requests.get('https://api.openalex.org/works?filter=display_name.search:Test of Ethical Sensitivity in Science and Engineering (TESSE)')
-# json_data = json.loads(request.text)
-# # DOI: https://doi.org/10.18260/1-2--3253
-# # links to ASEE
-
-# request = requests.get('https://api.openalex.org/works?filter=display_name.search:A Qualitative Examination of Content-Based Image Retrieval Behavior Using Systematically Modified Test Images')
-# json_data = json.loads(request.text)
-# # DOI: https://doi.org/10.1109/mwscas.2002.1187306
-# # Links to IEEE
-
-# request = requests.get('https://api.openalex.org/works?filter=display_name.search:The Engineering and Science Issues Test (ESIT): A Discipline-Specific Approach to Assessing Moral Judgment')
-# json_data = json.loads(request.text)
-# # DOI: https://doi.org/10.1007/s11948-009-9148-z
-# # Links to Springer
-
-
-
-"""
-Testing
-"""
 # ORCID for Jonathan Goodall = 0000-0002-1112-4522
-request = requests.get(f'https://api.openalex.org/authors/https://orcid.org/0000-0002-1112-4522')
-# request = requests.get(f'https://api.openalex.org/authors/random')
+# ORCID for Larry Band = 0000-0003-0461-0503
 
-json_data = json.loads(request.text)
-print('author name: ', json_data['display_name'])
+link_lab_orcids = {
+        'Negin Alemazkoor': '0000-0003-0221-3985',
+        'Homa Alemzadeh': '0000-0001-5279-842X',          #?
+        'Larry Band': '0000-0003-0461-0503',
+        'Laura Barnes': '?',
+        'Madhur Behl': '0000-0002-5921-0331',
+        'Nicola Bezzo': '0000-0001-6627-5048',            #?        
+        'Matthew Bolton': '?',
+        'Steven Bowers': '?',
+        'Maite Brandt-Pearce': '0000-0002-2566-8280',
+        'Benton Calhoun': '0000-0002-3770-5050',
+        'Brad Campbell': '?',
+        'Qing Chang': '0000-0003-3744-1371',
+        'T Donna Chen': '0000-0002-7026-3418',              #?
+        'Seokhyun Chung': '?',
+        'Haibo Dong': '?',
+        'Afsaneh Doryab': '0000-0003-1575-385X',          #?
+        'Lu Feng': '0000-0002-4651-8441',
+        'Tomonari Furukawa': '0000-0003-2811-4221',
+        'Gregory Gerling': '0000-0003-3137-3822',
+        'Jonathan Goodall': '0000-0002-1112-4522',
+        'Devin Harris': '0000-0003-0086-1073',
+        'Seongkook Heo': '0000-0003-2004-4812',
+        'Arsalan Heydarian': '0000-0001-5972-6947',
+        'Tariq Iqbal': '0000-0003-0133-1234',
+        'Barry Johnson': '0000-0001-6707-7588',
+        'Yen-Ling Kuo': '0000-0002-6433-6713',               #?
+        'Venkataraman Lakshmi': '0000-0001-7431-9004',
+        'James Lambert': '0000-0002-0697-8339',
+        'Zongli Lin': '0000-0003-1589-1443',
+        'Felix Xiaozhu Lin': '?',
+        'Liu Zhen': '0000-0001-8013-3804',                 #?
+        'Eric Loth': '0000-0003-4113-733X',
+        'Osman Ozbulut': '0000-0003-3836-3416',            #?
+        'Byungkyu Brian Park': '0000-0003-4597-6368',
+        'Daniel Quinn': '?',
+        'Sara Riggs': '0000-0002-0112-9469',
+        'Haiying Shen': '?',
+        'Cong Shen': '?',
+        'Brian Smith': '0000-0001-5102-6399',
+        'Mircea Stan': '0000-0003-0577-9976',
+        'John Stankovic': '0000-0001-7307-9395',
+        'Yixin Sun': '0000-0001-6650-4373',
+        'Sarah Sun': '0000-0003-1086-8017',
+        'Yuan Tian': '0000-0002-6435-564X',
+        'Shangtong Zhang': '0000-0003-4255-1364'
+        
+    }
 
-print(f"Numbers for {json_data['display_name']}: ")
-print(f"Publications: {json_data['works_count']}")
-print(f"Citations: {json_data['cited_by_count']}")
-print(f"Works URL for author: {json_data['works_api_url']}")
-works_url_for_author = json_data['works_api_url']
-
-works_url_for_author = json_data['works_api_url']
-works_url_for_author = works_url_for_author.split("=")
 
 
-request2 = requests.get(f'https://api.openalex.org/works?filter={works_url_for_author[1]}')
-json_data2 = json.loads(request2.text)
+orcids = ['0000-0002-1112-4522', '0000-0003-0461-0503']
 
-papers = json_data2['results']
-
-for paper in papers:
-    print(paper['display_name'])
-    print("\t Authors...")
-    for author in paper['authorships']:
-        print(f" \t {author['author']['display_name']}")
-    print()
-
-##### IT LOOKS LIKE CO-AUTHOR INFORMATION IS AVAILABLE
-##### SOME QUESTIONS ABOUT AUTHOR AMBIGUITY?  ESPECIALLY IF THERE ARE PEOPLE WITH COMMON NAMES
-##### ALSO ONLY GETTING FIRST 25 PUBLICATIONS, CAN PROBABLY FIX THIS
+for orcid in orcids:
+    request = requests.get(f'https://api.openalex.org/authors/https://orcid.org/{orcid}')
+    
+    json_data = json.loads(request.text)
+    faculty_name = json_data['display_name']
+    number_publications = json_data['works_count']
+    
+    # print(f"Works URL for author: {json_data['works_api_url']}")
+    works_url_for_author = json_data['works_api_url']
+    
+    works_url_for_author = works_url_for_author.split("=")
+    
+    all_publications_info = []   #holds all publications
+    
+    ## GETS DATA FOR PUBLICATIONS BY THE AUTHOR
+    # I can get up to 200 publication results per page. I need to divide the author's total number of publications by 200 to get the # of pages
+    number_of_pages = math.ceil(number_publications / 200)
+    
+    # iterate of number of pages needed per author
+    for i in range(number_of_pages):
+        request2 = requests.get(f'https://api.openalex.org/works?filter={works_url_for_author[1]}&page={i+1}&per-page=200')
+        json_data2 = json.loads(request2.text)
+    
+        # take publications info and store in list
+        for pub in json_data2['results']:
+            all_publications_info.append(pub)
+    
+    
+    ## GET PUBLICATIONS WITH COAUTHOR AND # OF PUBLICATIONS PER YEAR
+    pubs_with_coauthor = 0
+    publication_years = []
+    
+    
+    for paper in all_publications_info:
+        publication_years.append(paper['publication_year'])
+        if len(paper['authorships']) > 1:
+            pubs_with_coauthor += 1
+        
+        
+    #convert publication_years to list of integers
+    publication_years = list(map(int, publication_years))
+    # gets average number of publications per year
+    avg_pubs_per_year =  number_publications / ( max(publication_years) - min(publication_years))
+    
+    #put metricsin list to add to pandas dataframe
+    faculty_data_final = [faculty_name, orcid, number_publications, pubs_with_coauthor, avg_pubs_per_year]
+    
+    # Add faculty member's data as last row of datafrmae
+    link_lab_df.loc[len(link_lab_df)] = faculty_data_final
 
 
 

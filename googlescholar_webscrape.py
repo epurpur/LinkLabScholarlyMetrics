@@ -12,3 +12,5 @@ faculty_list = {
 
 source = requests.get(faculty_list['Jonathan Goodall'])
 soup = BeautifulSoup(source.text, 'lxml')
+
+
