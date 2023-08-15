@@ -22,8 +22,6 @@ link_lab_df = pd.DataFrame(columns=['Name', 'ORCID', 'Number of Publications', '
 
 
 
-
-
 """
 I am looking for # of publications, # of publications with co-author, # avg number publications per year
 """
