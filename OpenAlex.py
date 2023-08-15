@@ -81,58 +81,72 @@ link_lab_orcids = {
     }
 
 
-
-orcids = ['0000-0002-1112-4522', '0000-0003-0461-0503']
-
-for orcid in orcids:
-    request = requests.get(f'https://api.openalex.org/authors/https://orcid.org/{orcid}')
-    
-    json_data = json.loads(request.text)
-    faculty_name = json_data['display_name']
-    number_publications = json_data['works_count']
-    
-    # print(f"Works URL for author: {json_data['works_api_url']}")
-    works_url_for_author = json_data['works_api_url']
-    
-    works_url_for_author = works_url_for_author.split("=")
-    
-    all_publications_info = []   #holds all publications
-    
-    ## GETS DATA FOR PUBLICATIONS BY THE AUTHOR
-    # I can get up to 200 publication results per page. I need to divide the author's total number of publications by 200 to get the # of pages
-    number_of_pages = math.ceil(number_publications / 200)
-    
-    # iterate of number of pages needed per author
-    for i in range(number_of_pages):
-        request2 = requests.get(f'https://api.openalex.org/works?filter={works_url_for_author[1]}&page={i+1}&per-page=200')
-        json_data2 = json.loads(request2.text)
-    
-        # take publications info and store in list
-        for pub in json_data2['results']:
-            all_publications_info.append(pub)
-    
-    
-    ## GET PUBLICATIONS WITH COAUTHOR AND # OF PUBLICATIONS PER YEAR
-    pubs_with_coauthor = 0
-    publication_years = []
-    
-    
-    for paper in all_publications_info:
-        publication_years.append(paper['publication_year'])
-        if len(paper['authorships']) > 1:
-            pubs_with_coauthor += 1
+for name, orcid in link_lab_orcids.items():
+    if orcid != "?":
+        try:    
+            request = requests.get(f'https://api.openalex.org/authors/https://orcid.org/{orcid}')
+            
+            json_data = json.loads(request.text)
+            faculty_name = json_data['display_name']
+            number_publications = json_data['works_count']
+            
+            # print(f"Works URL for author: {json_data['works_api_url']}")
+            works_url_for_author = json_data['works_api_url']
+            
+            works_url_for_author = works_url_for_author.split("=")
+            
+            all_publications_info = []   #holds all publications
+            
+            ## GETS DATA FOR PUBLICATIONS BY THE AUTHOR
+            # I can get up to 200 publication results per page. I need to divide the author's total number of publications by 200 to get the # of pages
+            number_of_pages = math.ceil(number_publications / 200)
+            
+            # iterate of number of pages needed per author
+            for i in range(number_of_pages):
+                request2 = requests.get(f'https://api.openalex.org/works?filter={works_url_for_author[1]}&page={i+1}&per-page=200')
+                json_data2 = json.loads(request2.text)
+            
+                # take publications info and store in list
+                for pub in json_data2['results']:
+                    all_publications_info.append(pub)
+            
+            
+            ## GET PUBLICATIONS WITH COAUTHOR AND # OF PUBLICATIONS PER YEAR
+            pubs_with_coauthor = 0
+            publication_years = []
+            
+            
+            for paper in all_publications_info:
+                publication_years.append(paper['publication_year'])
+                if len(paper['authorships']) > 1:
+                    pubs_with_coauthor += 1
+                
+                
+            #convert publication_years to list of integers
+            publication_years = list(map(int, publication_years))
+            # gets average number of publications per year
+            avg_pubs_per_year =  number_publications / ( max(publication_years) - min(publication_years))
+            
+            #put metricsin list to add to pandas dataframe
+            faculty_data_final = [faculty_name, orcid, number_publications, pubs_with_coauthor, avg_pubs_per_year]
+            
+            # Add faculty member's data as last row of datafrmae
+            link_lab_df.loc[len(link_lab_df)] = faculty_data_final
         
+        except Exception:
+            # create filler data for errors
+            faculty_data_final = [name, 'n/a', 'n/a', 'n/a', 'n/a']
+            
+            # Add faculty member's data as last row of datafrmae
+            link_lab_df.loc[len(link_lab_df)] = faculty_data_final
+            
+            
+    else:
+        # create filler data for faculty with unknown or non-existant ORCID
+        faculty_data_final = [name, 'n/a', 'n/a', 'n/a', 'n/a']
         
-    #convert publication_years to list of integers
-    publication_years = list(map(int, publication_years))
-    # gets average number of publications per year
-    avg_pubs_per_year =  number_publications / ( max(publication_years) - min(publication_years))
-    
-    #put metricsin list to add to pandas dataframe
-    faculty_data_final = [faculty_name, orcid, number_publications, pubs_with_coauthor, avg_pubs_per_year]
-    
-    # Add faculty member's data as last row of datafrmae
-    link_lab_df.loc[len(link_lab_df)] = faculty_data_final
+        # Add faculty member's data as last row of datafrmae
+        link_lab_df.loc[len(link_lab_df)] = faculty_data_final
 
 
 
