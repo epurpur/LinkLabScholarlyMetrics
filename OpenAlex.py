@@ -15,6 +15,9 @@ import math
 import pandas as pd
 
 
+####### CHANGE THIS
+output_file_location = '/Users/ep9k/Desktop/LinkLab/'
+
 
 # Create pandas dataframe to hold data for each faculty member
 link_lab_df = pd.DataFrame(columns=['Name', 'ORCID', 'Number of Publications', 'Publications with Co-Author', 'Average Publications per Year'])
@@ -80,6 +83,8 @@ link_lab_orcids = {
 
 
 for name, orcid in link_lab_orcids.items():
+    
+    #Step 1. Create Link Lab Faculty report as a whole
     if orcid != "?":
         try:    
             request = requests.get(f'https://api.openalex.org/authors/https://orcid.org/{orcid}')
@@ -95,7 +100,9 @@ for name, orcid in link_lab_orcids.items():
             
             all_publications_info = []   #holds all publications
             
-            ## GETS DATA FOR PUBLICATIONS BY THE AUTHOR
+            
+            """ Step 1. Collect data for all link lab faculty together """
+            # GETS DATA FOR PUBLICATIONS BY THE AUTHOR
             # I can get up to 200 publication results per page. I need to divide the author's total number of publications by 200 to get the # of pages
             number_of_pages = math.ceil(number_publications / 200)
             
@@ -130,25 +137,74 @@ for name, orcid in link_lab_orcids.items():
             
             # Add faculty member's data as last row of datafrmae
             link_lab_df.loc[len(link_lab_df)] = faculty_data_final
+            
+            
+            """ Step 2. Collect publications per year data for individual faculty members"""
+            # I want the number of publications per year in a dataframe
+            years = []
+
+            for pub in all_publications_info:
+                years.append(pub['publication_year'])
+                
+            # get the unique years from the above list 'years'
+            individual_years = list(set(years))
+
+
+            # for each unique year in individual_years, count the occurrences of that year in the years list.
+            # make result into dict ex: {'2015': 4}
+            pubs_by_year = {}
+            for year in individual_years:
+                count = 0
+                for i in years:
+                    # match current item with current year. If match, increment the count. 
+                    if i == year:
+                        count += 1
+                        
+                pubs_by_year[year] = count
+                
+                
+            # create dataframe to store final data
+            final_pubs_dict = [{'Year': key, '# of Publications': value} for key, value in pubs_by_year.items()]
+
+            final_publications_df = pd.DataFrame(final_pubs_dict)
+            
+            # sort in ascending order by year
+            final_publications_df = final_publications_df.sort_values(by='Year')
+            #export final_publications_df to csv. One for each faculty member
+            final_publications_df.to_csv(output_file_location + name + '_pubs_per_year.csv', index=False)
+
         
         except Exception:
+            """ Step 1. Collect data for all link lab faculty together """
             # create filler data for errors
             faculty_data_final = [name, 'n/a', 'n/a', 'n/a', 'n/a']
             
             # Add faculty member's data as last row of datafrmae
             link_lab_df.loc[len(link_lab_df)] = faculty_data_final
             
+            """ Step 2. Collect publications per year data for individual faculty members"""
+            final_publications_df = pd.DataFrame(columns=['Year', '# of Publications'])
+            final_publications_df.to_csv(output_file_location + name + '_pubs_per_year.csv', index=False)
+
+            
             
     else:
+        """ Step 1. Collect data for all link lab faculty together """
+
         # create filler data for faculty with unknown or non-existant ORCID
         faculty_data_final = [name, 'n/a', 'n/a', 'n/a', 'n/a']
         
         # Add faculty member's data as last row of datafrmae
         link_lab_df.loc[len(link_lab_df)] = faculty_data_final
 
+        """ Step 2. Collect publications per year data for individual faculty members"""
+        final_publications_df = pd.DataFrame(columns=['Year', '# of Publications'])
+        final_publications_df.to_csv(output_file_location + name + '_pubs_per_year.csv', index=False)
 
 
 
+#export results to output file location for whole Link Lab data
+link_lab_df.to_csv(output_file_location + 'link_lab_whole.csv', index=False)
 
 
 
