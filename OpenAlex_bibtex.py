@@ -13,8 +13,8 @@ import random
 
 
 #ask for user input for upper and lower year constraints
-start_year = input("Please enter a lower year limit")
-end_year = input("Please enter an ending year limit")
+start_year = int(input("Please enter a lower year limit: "))
+end_year = int(input("Please enter an ending year limit: "))
 
 
 
@@ -124,9 +124,14 @@ for name, orcid in link_lab_orcids.items():
 # create dataframe to hold all publications data
 df = pd.DataFrame()
 # put lists above into columns
-df['Titles'] = titles
-df['Authors'] = authors
-df['Dates'] = dates
+df['Title'] = titles
+df['Author'] = authors
+df['Date'] = dates
+
+
+
+# remove rows from dataframe that have a publication date outside the time frame previously established by the user in start_year and end_year
+df = df[(df['Date'] >= start_year) & (df['Date'] <= end_year)]
 
 
 
@@ -139,11 +144,11 @@ for index, row in df.iterrows():
     entry = f"@article{{{index},\n"
     
     # Join authors using 'and' separator
-    authors = ' and '.join(row['Authors'])
+    authors = ' and '.join(row['Author'])
     entry += f"  author = {{{authors}}},\n"
     
-    entry += f"  title = {{{row['Titles']}}},\n"
-    entry += f"  year = {{{row['Dates']}}},\n"
+    entry += f"  title = {{{row['Title']}}},\n"
+    entry += f"  year = {{{row['Date']}}},\n"
     entry = entry.rstrip(',\n')  # Remove trailing comma and newline
     entry += "\n}\n\n"
     bibtex_data += entry
