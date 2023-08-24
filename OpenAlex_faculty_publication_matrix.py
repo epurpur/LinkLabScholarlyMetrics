@@ -119,15 +119,10 @@ GET PUBLICATIONS BY YEAR FOR ONE FACULTY MEMBER
 GET PUBLICATIONS BY YEAR FOR MULTIPLE FACULTY MEMBERS
 """
 
-orcids = {
-        'Jonathan Goodall': '0000-0002-1112-4522',
-        'Larry Band': '0000-0003-0461-0503'  ,
-        'Negin Alemazkoor': '0000-0003-0221-3985'
-    }
-
 all_data = {}
 all_years = []
 
+# loop through each faculty member
 for name, orcid in link_lab_orcids.items():
     try:
         individual_pubs = {}
