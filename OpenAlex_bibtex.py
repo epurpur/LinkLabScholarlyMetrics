@@ -77,6 +77,7 @@ all_publications_data = []
 titles = []
 authors = []    #author = "Orti, E. and Bredas, J.L. and Clarisse, C.",
 dates = []
+journals = []
 
 
 for name, orcid in link_lab_orcids.items():
@@ -102,8 +103,15 @@ for name, orcid in link_lab_orcids.items():
                 # take publications info and store in list
                 all_publications_data.append(pub)
                 
-                titles.append(pub['display_name'])
+                titles.append(pub['title'])
                 dates.append(pub['publication_year'])
+                
+                # get journal title. Journal title not always available. If not available, just append "unknown journal"
+                try:
+                    journals.append(pub['primary_location']['source']['display_name'])
+                except Exception:
+                    journals.append('Unknown Journal')
+                
         
                 # must loop through authors to get each individual author for each publication. There can be many authors
                 authors_by_publication = []
@@ -127,6 +135,7 @@ df = pd.DataFrame()
 df['Title'] = titles
 df['Author'] = authors
 df['Date'] = dates
+df['Journal'] = journals
 
 
 
@@ -149,6 +158,7 @@ for index, row in df.iterrows():
     
     entry += f"  title = {{{row['Title']}}},\n"
     entry += f"  year = {{{row['Date']}}},\n"
+    entry += f"  journal = {{{row['Journal']}}},\n"
     entry = entry.rstrip(',\n')  # Remove trailing comma and newline
     entry += "\n}\n\n"
     bibtex_data += entry
