@@ -10,6 +10,7 @@ import json
 import math
 import pandas as pd
 import random
+import re
 
 
 #ask for user input for upper and lower year constraints
@@ -100,29 +101,36 @@ for name, orcid in link_lab_orcids.items():
             json_data2 = json.loads(request2.text)
     
             for pub in json_data2['results']:
-                # take publications info and store in list
-                all_publications_data.append(pub)
+                # take publications info and store in lists
                 
-                titles.append(pub['title'])
-                dates.append(pub['publication_year'])
+                #first check if title contains chinese characters
+                chinese_pattern = re.compile(r'[\u4e00-\u9fff]+')  # Pattern to match Chinese characters
                 
-                # get journal title. Journal title not always available. If not available, just append "unknown journal"
-                try:
-                    journals.append(pub['primary_location']['source']['display_name'])
-                except Exception:
-                    journals.append('Unknown Journal')
+                if isinstance(pub['title'], str):  # for some reason, some of the titles are not strings?
+                    if not chinese_pattern.search(pub['title']):
+                        titles.append(pub['title'])
                 
+                
+                
+                        dates.append(pub['publication_year'])
+                
+                        # get journal title. Journal title not always available. If not available, just append "unknown journal"
+                        try:
+                            journals.append(pub['primary_location']['source']['display_name'])
+                        except Exception:
+                            journals.append('Unknown Journal')
+                        
         
-                # must loop through authors to get each individual author for each publication. There can be many authors
-                authors_by_publication = []
-        
-                for author in pub['authorships']:
-                    author_name = author['author']['display_name']
-                    authors_by_publication.append(author_name) 
-                    
+                        # must loop through authors to get each individual author for each publication. There can be many authors
+                        authors_by_publication = []
                 
-                # add group of authors_by_publication to authors list above
-                authors.append(authors_by_publication)
+                        for author in pub['authorships']:
+                            author_name = author['author']['display_name']
+                            authors_by_publication.append(author_name) 
+                            
+                        
+                        # add group of authors_by_publication to authors list above
+                        authors.append(authors_by_publication)
         
     except Exception:
         pass
