@@ -147,6 +147,31 @@ df['Journal'] = journals
 
 
 
+# clean HTML tags out of journal titles 
+# clean erroneous HTML tags from the titles
+def remove_html_tags(text):
+    # Regular expression pattern to match HTML tags
+    pattern = r'<[^>]+>'
+    
+    # Use re.sub to replace HTML tags with an empty string
+    clean_text = re.sub(pattern, '', text)
+    
+    return clean_text
+
+def remove_html_tags_from_list(string_list):
+    # Initialize an empty list to store strings without HTML tags
+    strings_without_html_tags = []
+    
+    for text in string_list:
+        clean_text = remove_html_tags(text)
+        strings_without_html_tags.append(clean_text)
+    
+    return strings_without_html_tags
+
+titles = remove_html_tags_from_list(titles)
+
+
+
 # remove rows from dataframe that have a publication date outside the time frame previously established by the user in start_year and end_year
 df = df[(df['Date'] >= start_year) & (df['Date'] <= end_year)]
 
