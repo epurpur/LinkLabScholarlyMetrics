@@ -147,7 +147,6 @@ df['Journal'] = journals
 
 
 
-# clean HTML tags out of journal titles 
 # clean erroneous HTML tags from the titles
 def remove_html_tags(text):
     # Regular expression pattern to match HTML tags
