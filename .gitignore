@@ -1,1 +1,6 @@
 .DS_Store
+geckodriver.log
+Link_Lab_Publications.bib
+openAlex_compare.csv
+academic_analytics_compare.csv
+requirements2.txt
